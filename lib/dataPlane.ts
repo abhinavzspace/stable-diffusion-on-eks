@@ -13,6 +13,7 @@ import nvidiaDevicePluginAddon from './addons/nvidiaDevicePlugin'
 import { S3SyncEFSAddOnProps, S3SyncEFSAddOn } from './addons/s3SyncEFS'
 import { SharedComponentAddOn, SharedComponentAddOnProps } from './addons/sharedComponent';
 import { SNSResourceProvider } from './resourceProvider/sns'
+import dcgmExporterAddon from './addons/dcgmExporter';
 
 export interface dataPlaneProps {
   stackName: string,
@@ -140,6 +141,7 @@ export default class DataPlaneStack {
       new blueprints.addons.ContainerInsightsAddOn(containerInsightsParams),
       new blueprints.addons.AwsForFluentBitAddOn(awsForFluentBitParams),
       new nvidiaDevicePluginAddon({}),
+      new dcgmExporterAddon({}),
       new SharedComponentAddOn(SharedComponentAddOnParams),
       new EbsThroughputTunerAddOn(EbsThroughputModifyAddOnParams),
       new S3SyncEFSAddOn(s3SyncEFSAddOnParams)
