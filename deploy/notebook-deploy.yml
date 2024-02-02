@@ -20,37 +20,36 @@ Parameters:
     Type: String
   GithubRepo:
     Type: String
-    Default: "https://github.com/aws-samples/stable-diffusion-on-eks.git"
+    Default: "https://github.com/abhinavzspace/stable-diffusion-on-eks.git"
     Description: Github Repository
-  EBSSize: 
+  EBSSize:
     Type: Number
     Default: 50
     Description: EBS Size Default Size is 50GB
 Resources:
-  ExecutionRole: 
+  ExecutionRole:
     Type: AWS::IAM::Role
-    Properties: 
-      AssumeRolePolicyDocument: 
+    Properties:
+      AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
                 - "sagemaker.amazonaws.com"
                 - "cloudformation.amazonaws.com"
-            Action: 
+            Action:
               - "sts:AssumeRole"
       Path: "/"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
-# NOTEBOOK -----------------------------------------------------
+  # NOTEBOOK -----------------------------------------------------
   NotebookInstance:
     Type: AWS::SageMaker::NotebookInstance
     Properties:
-      InstanceType: !Ref 'NotebookInstanceType'
+      InstanceType: !Ref "NotebookInstanceType"
       RoleArn: !GetAtt ExecutionRole.Arn
-      VolumeSizeInGB: !Ref 'EBSSize'
+      VolumeSizeInGB: !Ref "EBSSize"
       LifecycleConfigName: !GetAtt BasicNotebookInstanceLifecycleConfig.NotebookInstanceLifecycleConfigName
   BasicNotebookInstanceLifecycleConfig:
     Type: "AWS::SageMaker::NotebookInstanceLifecycleConfig"
@@ -65,21 +64,25 @@ Resources:
               sudo chown -R ec2-user:ec2-user /home/ec2-user/SageMaker
               echo "export s3uri=${S3Bucket}" >> /etc/profile.d/jupyter-env.sh
               sudo systemctl restart jupyter-server --no-block
-# END NOTEBOOK -------------------------------------------------
-
+  # END NOTEBOOK -------------------------------------------------
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
       # Need to define a static BucketName due to a circular dependency with the AWS::SNS::TopicPolicy
-      BucketName: 
-        !Sub 
-          - 'sd-models-${AWS::Region}-${RandomGUID}'
-          - { RandomGUID: !Select [0, !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId ]]]] }
+      BucketName: !Sub
+        - "sd-models-${AWS::Region}-${RandomGUID}"
+        - {
+            RandomGUID:
+              !Select [
+                0,
+                !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+              ],
+          }
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-      AccessControl: BucketOwnerFullControl    
+      AccessControl: BucketOwnerFullControl
 
 Outputs:
   Repo:
