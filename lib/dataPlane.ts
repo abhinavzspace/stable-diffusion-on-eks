@@ -268,7 +268,7 @@ export default class DataPlaneStack {
     ).addStatements(
       new cdk.aws_iam.PolicyStatement({
         effect: cdk.aws_iam.Effect.ALLOW,
-        actions: ["lambda:GetFunction"],
+        actions: ["lambda:GetFunction", "lambda:GetFunctionConfiguration"],
         resources: [handler.functionArn],
       })
     );
