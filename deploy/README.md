@@ -1,21 +1,17 @@
-# Stable diffusion on EKS 部署
+# Stable diffusion on EKS deployment
 
-## 环境需要:
+## Environment requirements:
 
-1. 至少一个VPC 的空余.
-2. 至少3个EIP 的空余.
-3. G4dn/G5 按需/spot 实例有足够配额.
+1. At least one VPC is available.
+2. At least 3 EIPs available.
+3. G4dn/G5 on-demand/spot instances have sufficient quota.
 
+## Install:
 
-## 安装:
+1. Import notebook-deploy.yml stack
+2. Follow the instructions in deploy.ipynb.
 
-1. 导入notebook-deploy.yml堆栈
-2. 按照deploy.ipynb中的说明进行操作.
+## Manual configuration:
 
-## 手动配置:
-1. config.yaml:配置参考sample/config.yaml,具体配置参数解释可以参考docs/configuration.md
-2. down.csv:tools/S3uploader目录下的 down.csv文件,编辑模型下载地址
-
-
-
-
+1. config.yaml: For configuration, please refer to sample/config.yaml. For explanation of specific configuration parameters, please refer to docs/configuration.md.
+2. down.csv: down.csv file in the tools/S3uploader directory, edit the model download address
